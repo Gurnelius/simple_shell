@@ -43,7 +43,8 @@ void parse_input(char *input, char **tokens, int *token_count)
 }
 /**
 * main - Entry point.
-* prompting until user types exit.
+* @argc: number of arguments
+* @argv: pointer to arguments
 * Return: 0 Always
 */
 int main(int argc, char *argv[])
