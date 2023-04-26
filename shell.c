@@ -46,7 +46,7 @@ void parse_input(char *input, char **tokens, int *token_count)
 * prompting until user types exit.
 * Return: 0 Always
 */
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *tokens[MAX_TOKENS];
 	int token_count;
@@ -68,11 +68,12 @@ int main(void)
 			if (pid == 0)
 			{
 				execvp(tokens[0], tokens);
-				perror("./shell");
+				if (argc > 0)
+					perror(argv[0]);
 				exit(1);
 			}
 			else if (pid < 0)
-				perror("./shell");
+				perror(argv[0]);
 			else
 				wait(NULL);
 		}
