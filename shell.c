@@ -6,56 +6,79 @@
 
 #define MAX_INPUT_SIZE 1024
 #define MAX_TOKENS 100
+/**
+* read_input - capture user input
+* Return: pointer to char input
+*/
+char *read_input()
+{
+	char *input = (char *) malloc(MAX_INPUT_SIZE);
 
-char* read_input() {
-  char* input = (char*) malloc(MAX_INPUT_SIZE);
-  fgets(input, MAX_INPUT_SIZE, stdin);
-  if (feof(stdin)) {
-    exit(0);
-  }
-  return input;
+	fgets(input, MAX_INPUT_SIZE, stdin);
+	if (feof(stdin))
+		exit(0);
+	return (input);
 }
-
-void parse_input(char* input, char** tokens, int* token_count) {
+/**
+* parse_input - Function to parse the user input
+* The tokens and token count will be accessed by main.
+* @input: pointer to input
+* @tokens: pointer to tokens
+* @token_count: number of tokens
+* Return: nothing
+*/
+void parse_input(char *input, char **tokens, int *token_count)
+{
 	char *token;
+
 	*token_count = 0;
-	
 	token = strtok(input, " \n");
+
 	while (token != NULL && *token_count < MAX_TOKENS)
 	{
 		tokens[(*token_count)++] = token;
 		token = strtok(NULL, " \n");
-  	}
+	}
 	tokens[*token_count] = NULL;
 }
+/**
+* main - Entry point.
+* prompting until user types exit.
+* Return: 0 Always
+*/
+int main(void)
+{
+	char *tokens[MAX_TOKENS];
+	int token_count;
+	char *input;
+	char *prompt = "#cisfun$ ";
 
-int main() {
-  char *tokens[MAX_TOKENS];
-  int token_count;
-  char* input;
-  char *prompt = "#cisfun$ ";
+	pid_t pid;
 
-  while (1) {
-    printf("%s", prompt);
-    input = read_input();
-    parse_input(input, tokens, &token_count);
+	while (1)
+	{
+		printf("%s", prompt);
+		input = read_input();
+		parse_input(input, tokens, &token_count);
 
-    if (token_count > 0) {
-      pid_t pid = fork();
-      if (pid == 0) {
-        execvp(tokens[0], tokens);
-        perror("./shell");
-        exit(1);
-      } else if (pid < 0) {
-        perror("./shell");
-      } else {
-        wait(NULL);
-      }
-    }
+		if (token_count > 0)
+		{
+			pid = fork();
 
-    free(input);
-  }
+			if (pid == 0)
+			{
+				execvp(tokens[0], tokens);
+				perror("./shell");
+				exit(1);
+			}
+			else if (pid < 0)
+				perror("./shell");
+			else
+				wait(NULL);
+		}
 
-  return 0;
+		free(input);
+	}
+
+	return (0);
 }
-
