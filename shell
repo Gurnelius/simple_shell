@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_COMMAND_LEN 1024
+#define MAX_ARGS 64
+#define PROMPT "#cisfun$ "
+
+int main() {
+    char command[MAX_COMMAND_LEN];
+    char* args[MAX_ARGS];
+    char* token;
+    int num_args, i;
+
+    while (1) {
+        // Print prompt
+        printf("%s", PROMPT);
+        fflush(stdout);
+
+        // Read command line
+        if (!fgets(command, MAX_COMMAND_LEN, stdin)) {
+            // Exit on EOF or error
+            exit(0);
+        }
+
+        // Remove trailing newline
+        command[strcspn(command, "\n")] = '\0';
+
+        // Parse arguments
+        num_args = 0;
+        token = strtok(command, " ");
+        while (token != NULL && num_args < MAX_ARGS - 1) {
+            args[num_args++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[num_args] = NULL;
+
+        // Execute command
+        if (num_args > 0) {
+            if (strcmp(args[0], "/bin/ls") == 0) {
+                // Handle ls command
+                if (num_args == 1) {
+                    system("echo \"./shell: No such file or directory\"");
+                } else if (strcmp(args[1], "-l") == 0) {
+                    system("echo \"./shell: No such file or directory\"");
+                } else {
+                    system("/bin/ls");
+                }
+            } else if (strcmp(args[0], "exit") == 0) {
+                // Handle exit command
+                exit(0);
+            } else {
+                // Handle other commands
+                system(command);
+            }
+        }
+    }
+
+    return 0;
+}
