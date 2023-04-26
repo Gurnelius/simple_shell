@@ -5,11 +5,14 @@
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 1024
-
+/**
+* main- Simple shell using fork
+* Return: nothing
+*/
 int main(void)
 {
 	char command[MAX_COMMAND_LENGTH];
-	char* args[MAX_COMMAND_LENGTH];
+	char *args[MAX_COMMAND_LENGTH];
 	int i = 0;
 	pid_t pid;
 
@@ -33,9 +36,8 @@ int main(void)
 		args[i] = NULL;
 
 		pid = fork();
-		if (pid == -1) {
+		if (pid == -1)
 			printf("Error: Failed to fork process\n");
-        	}
 		else if (pid == 0)
 		{
 			execvp(args[0], args);
@@ -46,5 +48,5 @@ int main(void)
 			wait(NULL);
 	}
 
-	return 0;
+	return (0);
 }
