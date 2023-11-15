@@ -39,14 +39,14 @@ int main(int argc, char **argv, char **env)
 		pid = fork();
 		if (pid < 0)
 		{
-			puts("Unkown error occurred.\n");
+			puts("Unkown error occurred.");
 		}
 		else if (pid == 0)
 		{
 			args[0] = command;
 			args[1] = NULL;
 			execve(command, args, env);
-			puts("No such file or directory\n");
+			puts("No such file or directory");
 			return (1);
 		}
 		else
