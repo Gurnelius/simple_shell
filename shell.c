@@ -31,7 +31,6 @@ int main(int argc, char **argv, char **env)
 		if (bytes_read == -1)
 		{
 			printf("\n");
-			free(command);
 			break;
 		}
 
@@ -56,5 +55,6 @@ int main(int argc, char **argv, char **env)
 		waitpid(pid, NULL, 0);
 		}
 	}
+	free(command);
 	return (0);
 }
