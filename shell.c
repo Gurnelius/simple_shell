@@ -17,12 +17,13 @@
 
 int main(int argc, char **argv, char **env)
 {
-
 	pid_t pid;
 	char *command = NULL;
 	size_t command_size = 0;
 	char *args[2];
 	ssize_t bytes_read;
+	(void) argc;
+	(void) argv;
 
 	while (1)
 	{
@@ -38,7 +39,7 @@ int main(int argc, char **argv, char **env)
 		pid = fork();
 		if (pid < 0)
 		{
-			perror("Unkown error occurred.");
+			puts("Unkown error occurred.\n");
 		}
 		else if (pid == 0)
 		{
@@ -46,13 +47,12 @@ int main(int argc, char **argv, char **env)
 			args[1] = NULL;
 
 			execve(command, args, env);
-			if (argc > 0)
-				printf("%s : No such file or directory\n", argv[0]);
+			puts("No such file or directory\n");
 			return (1);
 		}
 		else
 		{
-		waitpid(pid, NULL, 0);
+			waitpid(pid, NULL, 0);
 		}
 	}
 	free(command);
