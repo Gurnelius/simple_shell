@@ -23,7 +23,6 @@ int main(int argc, char **argv, char **env)
 	char *args[2];
 	ssize_t bytes_read;
 	(void) argc;
-	(void) argv;
 
 	while (1)
 	{
@@ -39,14 +38,15 @@ int main(int argc, char **argv, char **env)
 		pid = fork();
 		if (pid < 0)
 		{
-			puts("Unkown error occurred.");
+			printf("Unkown error occurred.\n");
+			break;
 		}
 		else if (pid == 0)
 		{
 			args[0] = command;
 			args[1] = NULL;
 			execve(command, args, env);
-			puts("No such file or directory");
+			printf("%s: No such file or directory", argv[0]);
 			return (1);
 		}
 		else
