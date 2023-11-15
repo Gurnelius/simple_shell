@@ -1,33 +1,8 @@
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include "utils.h"
 
-/**
- * tokenize - tokenize a string
- *
- * @command: pointer to the string to tokenize
- * @args: pointer to pointer to tokens
- *
- * Returns: Nothing
- */
-void tokenize(char *command, char **args)
-{
-	char *token = NULL;
-	int a = 0;
-
-	token = strtok(command, " \n");
-
-	while (token)
-	{
-		args[a] = token;
-		token = strtok(NULL, " \n");
-		a++;
-	}
-	args[a] = NULL;
-}
-
-/**
 char *_get_path(char *command, char *env) 
 {
     char *path = NULL;
@@ -37,8 +12,12 @@ char *_get_path(char *command, char *env)
     }
 
     return path;
-    }
-    */
+}
+
+char *get_path(char *command, char *env)
+{
+	return getenv("PATH");
+}
 
 char *get_file_path(char *path, char *command)
 {
@@ -48,17 +27,13 @@ char *get_file_path(char *path, char *command)
 	size_t file_path_size = 0;
 
 
-	if (path == NULL || command == NULL)
-		return (NULL);
-
 	file_path_size = strlen(path) + strlen(command) + 2; 
 	file_path = malloc(file_path_size);
 
 	if (file_path == NULL) 
 	{
         	perror("Memory allocation error");
-E
-		return (NULL);
+		exit(EXIT_FAILURE);
 	}
 
 	dir = strtok(path, ":");
@@ -75,14 +50,24 @@ E
 
 		dir = strtok(NULL, ":");
 	}
-	if (fp)
+	return (file_path);
+}
+
+int main(int argc, char **argv, char **env)
+{
+	char *path = NULL;
+	char *file_path = NULL;
+	char *command = "ls";
+
+	path = get_path(command, *env);
+	file_path = get_file_path(path, command);
+
+	if (file_path)
 	{
-		fclose(fp);
-		return (file_path);
-	} 
-	else
-	{
-		free(file_path);
-		return (NULL);
+		printf("Found: %s", file_path);
 	}
+	else
+		printf("File not found");
+		
+	free(file_path);
 }
