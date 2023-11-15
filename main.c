@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
+#include "main.h"
+#include "utils.h"
+#include "utils2.h"
 
 /**
 * main - read user commands and
@@ -23,6 +21,7 @@ int main(int argc, char **argv, char **env)
 	char *args[2];
 	ssize_t bytes_read;
 	(void) argc;
+	(void) argv;
 
 	while (1)
 	{
@@ -30,7 +29,7 @@ int main(int argc, char **argv, char **env)
 		bytes_read = getline(&command, &command_size, stdin);
 		if (bytes_read == -1)
 		{
-			printf("\n");
+			_puts("\n");
 			break;
 		}
 
@@ -38,7 +37,7 @@ int main(int argc, char **argv, char **env)
 		pid = fork();
 		if (pid < 0)
 		{
-			printf("Unkown error occurred.\n");
+			_puts("Unkown error occurred.\n");
 			break;
 		}
 		else if (pid == 0)
@@ -46,7 +45,7 @@ int main(int argc, char **argv, char **env)
 			args[0] = command;
 			args[1] = NULL;
 			execve(command, args, env);
-			printf("%s: No such file or directory", argv[0]);
+			_puts("No such file or directory");
 			return (1);
 		}
 		else
