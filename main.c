@@ -21,7 +21,6 @@ int main(int argc, char **argv, char **env)
 	char *args[2];
 	ssize_t bytes_read;
 	(void) argc;
-	(void) argv;
 
 	while (1)
 	{
@@ -29,8 +28,8 @@ int main(int argc, char **argv, char **env)
 		bytes_read = getline(&command, &command_size, stdin);
 		if (bytes_read == -1)
 		{
-			_puts("\n");
-			break;
+			printf("\n");
+			return (EXIT_FAILURE);
 		}
 
 		command[bytes_read - 1] = '\0';
@@ -38,15 +37,15 @@ int main(int argc, char **argv, char **env)
 		if (pid < 0)
 		{
 			_puts("Unkown error occurred.\n");
-			break;
+			return (EXIT_FAILURE);
 		}
 		else if (pid == 0)
 		{
 			args[0] = command;
 			args[1] = NULL;
 			execve(command, args, env);
-			_puts("No such file or directory");
-			return (1);
+			printf("%s: No such file or directory\n", argv[0]);
+			return (EXIT_FAILURE);
 		}
 		else
 		{
@@ -54,5 +53,5 @@ int main(int argc, char **argv, char **env)
 		}
 	}
 	free(command);
-	return (0);
+	return (EXIT_SUCCESS);
 }
