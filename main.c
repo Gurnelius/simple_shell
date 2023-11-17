@@ -24,11 +24,11 @@ int main(int argc, char **argv, char **env)
 
 	while (1)
 	{
-		printf("#cisfun: ");
+		if (isatty(0))
+			printf("#cisfun: ");
 		bytes_read = getline(&command, &command_size, stdin);
 		if (bytes_read == -1)
 		{
-			printf("\n");
 			return (EXIT_FAILURE);
 		}
 
