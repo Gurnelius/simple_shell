@@ -21,6 +21,7 @@ int main(int argc, char **argv, char **env)
 	char *args[2];
 	ssize_t bytes_read;
 	(void) argc;
+	(void) argv;
 
 	while (1)
 	{
@@ -44,7 +45,6 @@ int main(int argc, char **argv, char **env)
 			args[0] = command;
 			args[1] = NULL;
 			execve(command, args, env);
-			printf("%s: No such file or directory\n", argv[0]);
 			return (EXIT_FAILURE);
 		}
 		else
